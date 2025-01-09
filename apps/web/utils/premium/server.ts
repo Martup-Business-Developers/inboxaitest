@@ -89,9 +89,6 @@ export async function cancelPremium({
   expired: boolean;
 }) {
   if (variantId) {
-    // Check if the premium exists for the given variant
-    // If the user changed plans we won't find it in the database
-    // And that's okay because the user is on a different plan
     const premium = await prisma.premium.findUnique({
       where: { id: premiumId, lemonSqueezyVariantId: variantId },
       select: { id: true },
@@ -103,13 +100,10 @@ export async function cancelPremium({
     where: { id: premiumId },
     data: {
       lemonSqueezyRenewsAt: lemonSqueezyEndsAt,
-      ...(expired
-        ? {
-            bulkUnsubscribeAccess: null,
-            aiAutomationAccess: null,
-            coldEmailBlockerAccess: null,
-          }
-        : {}),
+      bulkUnsubscribeAccess: FeatureAccess.LOCKED,
+      aiAutomationAccess: FeatureAccess.LOCKED,
+      coldEmailBlockerAccess: FeatureAccess.LOCKED,
+      emailAccountsAccess: 0, // Optionally lock email access
     },
     select: {
       users: {
@@ -140,7 +134,7 @@ export async function editEmailAccountsAccess(options: {
   });
 }
 
-function getTierAccess(tier: PremiumTier) {
+function getTierAccess(tier: PremiumTier | null) {
   switch (tier) {
     case PremiumTier.BASIC_MONTHLY:
     case PremiumTier.BASIC_ANNUALLY:
@@ -158,15 +152,19 @@ function getTierAccess(tier: PremiumTier) {
       };
     case PremiumTier.BUSINESS_MONTHLY:
     case PremiumTier.BUSINESS_ANNUALLY:
-    case PremiumTier.COPILOT_MONTHLY:
     case PremiumTier.LIFETIME:
-    case PremiumTier.SEVEN_DAY_PASS: // Assuming same access as basic
+    case PremiumTier.SEVEN_DAY_PASS:
       return {
         bulkUnsubscribeAccess: FeatureAccess.UNLOCKED,
-        aiAutomationAccess: FeatureAccess.LOCKED,
-        coldEmailBlockerAccess: FeatureAccess.LOCKED,
+        aiAutomationAccess: FeatureAccess.UNLOCKED,
+        coldEmailBlockerAccess: FeatureAccess.UNLOCKED,
       };
     default:
-      throw new Error(`Unknown premium tier: ${tier}`);
+      // Default to locked for all features when no plan is present
+      return {
+        bulkUnsubscribeAccess: FeatureAccess.UNLOCKED_WITH_API_KEY,
+        aiAutomationAccess: FeatureAccess.UNLOCKED_WITH_API_KEY,
+        coldEmailBlockerAccess: FeatureAccess.UNLOCKED_WITH_API_KEY,
+      };
   }
 }
