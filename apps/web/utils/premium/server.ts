@@ -103,7 +103,7 @@ export async function cancelPremium({
       bulkUnsubscribeAccess: FeatureAccess.LOCKED,
       aiAutomationAccess: FeatureAccess.LOCKED,
       coldEmailBlockerAccess: FeatureAccess.LOCKED,
-      emailAccountsAccess: 0, // Optionally lock email access
+      emailAccountsAccess: 3, // Optionally lock email access
     },
     select: {
       users: {
