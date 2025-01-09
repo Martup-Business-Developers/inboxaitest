@@ -19,10 +19,15 @@ export async function upgradeToPremium(options: {
 }) {
   const { userId, ...rest } = options;
 
-  const lemonSqueezyRenewsAt =
-    options.tier === PremiumTier.LIFETIME
-      ? new Date(Date.now() + TEN_YEARS)
-      : options.lemonSqueezyRenewsAt;
+  let lemonSqueezyRenewsAt: Date | null;
+
+  if (options.tier === PremiumTier.LIFETIME) {
+    lemonSqueezyRenewsAt = new Date(Date.now() + TEN_YEARS);
+  } else if (options.tier === PremiumTier.SEVEN_DAY_PASS) {
+    lemonSqueezyRenewsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  } else {
+    lemonSqueezyRenewsAt = options.lemonSqueezyRenewsAt;
+  }
 
   const user = await prisma.user.findUnique({
     where: { id: options.userId },
@@ -43,15 +48,16 @@ export async function upgradeToPremium(options: {
       data,
       select: { users: { select: { email: true } } },
     });
+  } else {
+    return await prisma.premium.create({
+      data: {
+        users: { connect: { id: options.userId } },
+        admins: { connect: { id: options.userId } },
+        ...data,
+      },
+      select: { users: { select: { email: true } } },
+    });
   }
-  return await prisma.premium.create({
-    data: {
-      users: { connect: { id: options.userId } },
-      admins: { connect: { id: options.userId } },
-      ...data,
-    },
-    select: { users: { select: { email: true } } },
-  });
 }
 
 export async function extendPremium(options: {
@@ -154,10 +160,11 @@ function getTierAccess(tier: PremiumTier) {
     case PremiumTier.BUSINESS_ANNUALLY:
     case PremiumTier.COPILOT_MONTHLY:
     case PremiumTier.LIFETIME:
+    case PremiumTier.SEVEN_DAY_PASS: // Assuming same access as basic
       return {
         bulkUnsubscribeAccess: FeatureAccess.UNLOCKED,
-        aiAutomationAccess: FeatureAccess.UNLOCKED,
-        coldEmailBlockerAccess: FeatureAccess.UNLOCKED,
+        aiAutomationAccess: FeatureAccess.LOCKED,
+        coldEmailBlockerAccess: FeatureAccess.LOCKED,
       };
     default:
       throw new Error(`Unknown premium tier: ${tier}`);

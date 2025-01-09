@@ -14,6 +14,7 @@ export const changePremiumStatusSchema = z.object({
     PremiumTier.BUSINESS_ANNUALLY,
     PremiumTier.COPILOT_MONTHLY,
     PremiumTier.LIFETIME,
+    PremiumTier.SEVEN_DAY_PASS,
   ]),
   count: z.coerce.number().optional(),
   upgrade: z.boolean(),

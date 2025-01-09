@@ -13,31 +13,42 @@ type Tier = {
   cta: string;
   ctaLink?: string;
   mostPopular?: boolean;
+  duration?: string;
+  getDisplayedPrice: (frequency: "monthly" | "annually") => number;
+  getEquivalentMonthlyPrice: (frequency: "monthly" | "annually") => number;
+};
+
+const getFrequencySuffix = (tier: PremiumTier, frequency: "monthly" | "annually") => {
+  if (tier === PremiumTier.SEVEN_DAY_PASS) {
+    return ""; // No suffix for 7-Day Pass
+  }
+  return frequency === "monthly" ? "/month" : "/month";
 };
 
 export const frequencies = [
-  { value: "monthly" as const, label: "Monthly", priceSuffix: "/month" },
-  { value: "annually" as const, label: "Annually", priceSuffix: "/month" },
+  { value: "monthly" as const, label: "Monthly", priceSuffix: (tier: PremiumTier) => getFrequencySuffix(tier, "monthly") },
+  { value: "annually" as const, label: "Annually", priceSuffix: (tier: PremiumTier) => getFrequencySuffix(tier, "annually") },
 ];
 
 const pricing: Record<PremiumTier, number> = {
   [PremiumTier.BASIC_MONTHLY]: 12,
-  [PremiumTier.BASIC_ANNUALLY]: 6,
-  [PremiumTier.PRO_MONTHLY]: 16,
-  [PremiumTier.PRO_ANNUALLY]: 8,
+  [PremiumTier.BASIC_ANNUALLY]: 5,
+  [PremiumTier.PRO_MONTHLY]: 12,
+  [PremiumTier.PRO_ANNUALLY]: 5,
   [PremiumTier.BUSINESS_MONTHLY]: 12,
-  [PremiumTier.BUSINESS_ANNUALLY]: 8,
+  [PremiumTier.BUSINESS_ANNUALLY]: 5,
   [PremiumTier.COPILOT_MONTHLY]: 499,
   [PremiumTier.LIFETIME]: 299,
+  [PremiumTier.SEVEN_DAY_PASS]: 7,
 };
 
-export const pricingAdditonalEmail: Record<PremiumTier, number> = {
-  [PremiumTier.BASIC_MONTHLY]: 4,
+const pricingAdditonalEmail: Record<PremiumTier, number> = {
+  [PremiumTier.BASIC_MONTHLY]: 6,
   [PremiumTier.BASIC_ANNUALLY]: 4,
   [PremiumTier.PRO_MONTHLY]: 6,
-  [PremiumTier.PRO_ANNUALLY]: 6,
-  [PremiumTier.BUSINESS_MONTHLY]: 8,
-  [PremiumTier.BUSINESS_ANNUALLY]: 6,
+  [PremiumTier.PRO_ANNUALLY]: 4,
+  [PremiumTier.BUSINESS_MONTHLY]: 6,
+  [PremiumTier.BUSINESS_ANNUALLY]: 4,
   [PremiumTier.COPILOT_MONTHLY]: 0,
   [PremiumTier.LIFETIME]: 99,
 };
@@ -51,6 +62,7 @@ const variantIdToTier: Record<number, PremiumTier> = {
   [env.NEXT_PUBLIC_BUSINESS_ANNUALLY_VARIANT_ID]: PremiumTier.BUSINESS_ANNUALLY,
   [env.NEXT_PUBLIC_COPILOT_MONTHLY_VARIANT_ID]: PremiumTier.COPILOT_MONTHLY,
   [env.NEXT_PUBLIC_LIFETIME_VARIANT_ID]: PremiumTier.LIFETIME,
+  [env.NEXT_PUBLIC_SEVEN_DAY_PASS_VARIANT_ID]: PremiumTier.SEVEN_DAY_PASS,
 };
 
 const tierToVariantId: Record<PremiumTier, number> = {
@@ -62,14 +74,15 @@ const tierToVariantId: Record<PremiumTier, number> = {
   [PremiumTier.BUSINESS_ANNUALLY]: env.NEXT_PUBLIC_BUSINESS_ANNUALLY_VARIANT_ID,
   [PremiumTier.COPILOT_MONTHLY]: env.NEXT_PUBLIC_COPILOT_MONTHLY_VARIANT_ID,
   [PremiumTier.LIFETIME]: env.NEXT_PUBLIC_LIFETIME_VARIANT_ID,
+  [PremiumTier.SEVEN_DAY_PASS]: env.NEXT_PUBLIC_SEVEN_DAY_PASS_VARIANT_ID,
 };
 
 function discount(monthly: number, annually: number) {
   return ((monthly - annually) / monthly) * 100;
 }
 
-const basicTier = {
-  name: "Unsubscriber",
+const basicTier: Tier = {
+  name: "Basic",
   tiers: {
     monthly: PremiumTier.BASIC_MONTHLY,
     annually: PremiumTier.BASIC_ANNUALLY,
@@ -95,11 +108,20 @@ const basicTier = {
     "Email analytics",
   ],
   cta: "Try free for 7 days",
+  getDisplayedPrice: (frequency) => {
+    return pricing[frequency === "monthly" ? PremiumTier.BASIC_MONTHLY : PremiumTier.BASIC_ANNUALLY];
+  },
+  getEquivalentMonthlyPrice: (frequency) => {
+    if (frequency === "annually") {
+      return pricing.BASIC_ANNUALLY / 12;
+    }
+    return pricing.BASIC_MONTHLY;
+  },
 };
 
 export const businessTierName = "AI Assistant";
 
-const businessTier = {
+const businessTier: Tier = {
   name: businessTierName,
   tiers: {
     monthly: PremiumTier.BUSINESS_MONTHLY,
@@ -130,8 +152,17 @@ const businessTier = {
     "Unlimited AI credits",
     "Priority support",
   ],
-  cta: "Try free for 7 days",
+  cta: "Get Started",
   mostPopular: true,
+  getDisplayedPrice: (frequency) => {
+    return pricing[frequency === "monthly" ? PremiumTier.BUSINESS_MONTHLY : PremiumTier.BUSINESS_ANNUALLY];
+  },
+  getEquivalentMonthlyPrice: (frequency) => {
+    if (frequency === "annually") {
+      return pricing.BUSINESS_ANNUALLY / 12;
+    }
+    return pricing.BUSINESS_MONTHLY;
+  },
 };
 
 export const businessSingleTier: Tier = {
@@ -166,10 +197,20 @@ export const businessSingleTier: Tier = {
     "Email analytics",
     "Priority support",
   ],
-  cta: "Try free for 7 days",
+  cta: "Get Started",
+  mostPopular: true,
+  getDisplayedPrice: (frequency) => {
+    return pricing[frequency === "monthly" ? PremiumTier.BUSINESS_MONTHLY : PremiumTier.BUSINESS_ANNUALLY];
+  },
+  getEquivalentMonthlyPrice: (frequency) => {
+    if (frequency === "annually") {
+      return pricing.BUSINESS_ANNUALLY / 12;
+    }
+    return pricing.BUSINESS_MONTHLY;
+  },
 };
 
-const copilotTier = {
+const copilotTier: Tier = {
   name: "Co-Pilot",
   tiers: {
     monthly: PremiumTier.COPILOT_MONTHLY,
@@ -198,9 +239,60 @@ const copilotTier = {
   cta: "Book a call",
   ctaLink: env.NEXT_PUBLIC_CALL_LINK,
   mostPopular: false,
+  getDisplayedPrice: (frequency) => {
+    return pricing[frequency === "monthly" ? PremiumTier.COPILOT_MONTHLY : PremiumTier.COPILOT_MONTHLY];
+  },
+  getEquivalentMonthlyPrice: (frequency) => {
+    if (frequency === "annually") {
+      return pricing.COPILOT_MONTHLY / 12;
+    }
+    return pricing.COPILOT_MONTHLY;
+  },
 };
 
-export const allTiers: Tier[] = [basicTier, businessTier, copilotTier];
+export const sevenDayPassTier: Tier = {
+  name: "7-Day Pass",
+  tiers: {
+    monthly: PremiumTier.SEVEN_DAY_PASS,
+    annually: PremiumTier.SEVEN_DAY_PASS,
+  },
+  href: {
+    monthly: env.NEXT_PUBLIC_SEVEN_DAY_PASS_PAYMENT_LINK,
+    annually: env.NEXT_PUBLIC_SEVEN_DAY_PASS_PAYMENT_LINK,
+  },
+  price: {
+    monthly: pricing.SEVEN_DAY_PASS,
+    annually: pricing.SEVEN_DAY_PASS,
+  },
+  priceAdditional: {
+    monthly: pricingAdditonalEmail.SEVEN_DAY_PASS,
+    annually: pricingAdditonalEmail.SEVEN_DAY_PASS,
+  },
+  discount: { monthly: 0, annually: 0 },
+  description: "Full access for 7 days",
+  features: [
+    "Everything in Business plan",
+    "7 days of full access",
+    "No recurring charges",
+    "Try all premium features",
+    "AI personal assistant",
+    "Smart categories",
+    "Cold email blocker",
+  ],
+  cta: "Get 7-Day Pass",
+  duration: "7 days",
+  getDisplayedPrice: (frequency) => {
+    return pricing[frequency === "monthly" ? PremiumTier.SEVEN_DAY_PASS : PremiumTier.SEVEN_DAY_PASS];
+  },
+  getEquivalentMonthlyPrice: (frequency) => {
+    if (frequency === "annually") {
+      return pricing.SEVEN_DAY_PASS / 12;
+    }
+    return pricing.SEVEN_DAY_PASS;
+  },
+};
+
+export const allTiers: Tier[] = [basicTier, businessTier, copilotTier, sevenDayPassTier];
 
 export function getSubscriptionTier({
   variantId,

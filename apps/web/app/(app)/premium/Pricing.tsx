@@ -18,7 +18,7 @@ import { getUserTier, isPremiumExpired } from "@/utils/premium";
 import {
   frequencies,
   pricingAdditonalEmail,
-  allTiers,
+  sevenDayPassTier,
   businessSingleTier,
 } from "@/app/(app)/premium/config";
 import { AlertWithButton } from "@/components/Alert";
@@ -76,7 +76,8 @@ export function Pricing(props: { header?: React.ReactNode }) {
   function getLayoutComponents() {
     const isBasicTier =
       premiumTier === PremiumTier.BASIC_MONTHLY ||
-      premiumTier === PremiumTier.BASIC_ANNUALLY;
+      premiumTier === PremiumTier.BASIC_ANNUALLY ||
+      premiumTier === PremiumTier.SEVEN_DAY_PASS;
 
     if (pricingVariant === "business-only" && !isBasicTier)
       return {
@@ -88,10 +89,14 @@ export function Pricing(props: { header?: React.ReactNode }) {
       return {
         Layout: TwoColLayout,
         Item: TwoColItem,
-        tiers: [allTiers[0], allTiers[1]],
+        tiers: [sevenDayPassTier, businessSingleTier], // Example tiers
       };
     // control
-    return { Layout: ThreeColLayout, Item: ThreeColItem, tiers: allTiers };
+    return {
+      Layout: ThreeColLayout,
+      Item: ThreeColItem,
+      tiers: [sevenDayPassTier, businessSingleTier], // Adjust tiers as needed
+    };
   }
 
   const { Layout, Item, tiers } = getLayoutComponents();
@@ -126,11 +131,7 @@ export function Pricing(props: { header?: React.ReactNode }) {
                 <AlertWithButton
                   variant="blue"
                   title="Add extra users to your account!"
-                  description={`You can upgrade extra accounts to ${capitalCase(
-                    premiumTier,
-                  )} for $${
-                    pricingAdditonalEmail[premiumTier]
-                  } per email address!`}
+                  description="With this plan, you can add 3 additional emails."
                   icon={null}
                   button={
                     <div className="ml-4 whitespace-nowrap">
@@ -168,9 +169,11 @@ export function Pricing(props: { header?: React.ReactNode }) {
             ))}
           </RadioGroup>
 
-          <div className="ml-1">
-            <Badge>Save 33%!</Badge>
-          </div>
+          {frequency.value === "annually" && (
+            <div className="ml-1">
+              <Badge>Save 58%</Badge>
+            </div>
+          )}
         </div>
 
         <Layout className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-y-8">
@@ -204,6 +207,7 @@ export function Pricing(props: { header?: React.ReactNode }) {
                 key={tier.name}
                 className="rounded-3xl bg-white p-8 ring-1 ring-gray-200 xl:p-10"
                 index={tierIdx}
+                frequency={frequency}
               >
                 <div>
                   <div className="flex items-center justify-between gap-x-4">
@@ -226,7 +230,7 @@ export function Pricing(props: { header?: React.ReactNode }) {
                       ${tier.price[frequency.value]}
                     </span>
                     <span className="text-sm font-semibold leading-6 text-gray-600">
-                      {frequency.priceSuffix}
+                      {frequency.priceSuffix(tier.tiers[frequency.value])}
                     </span>
 
                     {!!tier.discount?.[frequency.value] && (
@@ -237,10 +241,16 @@ export function Pricing(props: { header?: React.ReactNode }) {
                       </Badge>
                     )}
                   </p>
+
+                  {frequency.value === "annually" && (
+                    <p className="mt-2 text-sm leading-6 text-gray-500">
+                      Billed at $59/year
+                    </p>
+                  )}
+
                   {tier.priceAdditional ? (
                     <p className="mt-3 text-sm leading-6 text-gray-500">
-                      +${formatPrice(tier.priceAdditional[frequency.value])} for
-                      each additional email account
+                      This plan allows you to add +3 extra email accounts.
                     </p>
                   ) : (
                     <div className="mt-16" />

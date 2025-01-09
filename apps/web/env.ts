@@ -11,6 +11,7 @@ export const env = createEnv({
     GOOGLE_CLIENT_ID: z.string().min(1),
     GOOGLE_CLIENT_SECRET: z.string().min(1),
     OPENAI_API_KEY: z.string().optional(),
+    OPENAI_BASE_URL: z.string().optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
     BEDROCK_ACCESS_KEY: z.string().optional(),
     BEDROCK_SECRET_KEY: z.string().optional(),
@@ -85,6 +86,9 @@ export const env = createEnv({
     NEXT_PUBLIC_LIFETIME_VARIANT_ID: z.coerce.number().default(0),
     NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_PAYMENT_LINK: z.string().default(""),
     NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_VARIANT_ID: z.coerce.number().default(0),
+    // 7-Day Pass
+    NEXT_PUBLIC_SEVEN_DAY_PASS_PAYMENT_LINK: z.string().default(""),
+    NEXT_PUBLIC_SEVEN_DAY_PASS_VARIANT_ID: z.coerce.number().default(0),
 
     NEXT_PUBLIC_FREE_UNSUBSCRIBE_CREDITS: z.number().default(1),
     NEXT_PUBLIC_CALL_LINK: z
@@ -162,7 +166,12 @@ export const env = createEnv({
     NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_PAYMENT_LINK:
       process.env.NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_PAYMENT_LINK,
     NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_VARIANT_ID:
-      process.env.NEXT_PUBLIC_LIFETIME_VARIANT_ID,
+      process.env.NEXT_PUBLIC_LIFETIME_EXTRA_SEATS_VARIANT_ID,
+    // 7-Day Pass
+    NEXT_PUBLIC_SEVEN_DAY_PASS_PAYMENT_LINK:
+      process.env.NEXT_PUBLIC_SEVEN_DAY_PASS_PAYMENT_LINK,
+    NEXT_PUBLIC_SEVEN_DAY_PASS_VARIANT_ID:
+      process.env.NEXT_PUBLIC_SEVEN_DAY_PASS_VARIANT_ID,
 
     NEXT_PUBLIC_CALL_LINK: process.env.NEXT_PUBLIC_CALL_LINK,
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,

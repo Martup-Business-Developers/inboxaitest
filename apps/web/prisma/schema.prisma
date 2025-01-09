@@ -379,10 +379,10 @@ enum ActionType {
 
 enum Frequency {
   NEVER
-  // DAILY
+  DAILY
   WEEKLY
-  // MONTHLY
-  // ANNUALLY
+  MONTHLY
+  ANNUALLY
 }
 
 enum NewsletterStatus {
@@ -412,6 +412,7 @@ enum PremiumTier {
   BUSINESS_ANNUALLY
   COPILOT_MONTHLY
   LIFETIME
+  SEVEN_DAY_PASS
 }
 
 enum FeatureAccess {

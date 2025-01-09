@@ -27,7 +27,8 @@ export function usePremium() {
 
   const isProPlanWithoutApiKey =
     (premium?.tier === PremiumTier.PRO_MONTHLY ||
-      premium?.tier === PremiumTier.PRO_ANNUALLY) &&
+      premium?.tier === PremiumTier.PRO_ANNUALLY ||
+    premium?.tier === PremiumTier.SEVEN_DAY_PASS) &&
     !aiApiKey;
 
   return {
@@ -54,6 +55,7 @@ function PremiumAiAssistantAlert({
   className,
   tier,
 }: {
+  plan?: "Mailto Live AI" | "Mailto Live Pro";
   showSetApiKey: boolean;
   className?: string;
   tier?: PremiumTier | null;
@@ -61,7 +63,7 @@ function PremiumAiAssistantAlert({
   const { PremiumModal, openModal } = usePremiumModal();
 
   const isBasicPlan =
-    tier === PremiumTier.BASIC_MONTHLY || tier === PremiumTier.BASIC_ANNUALLY;
+    tier === PremiumTier.BASIC_MONTHLY || tier === PremiumTier.BASIC_ANNUALLY || tier === PremiumTier.SEVEN_DAY_PASS;
 
   return (
     <div className={className}>

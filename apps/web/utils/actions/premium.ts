@@ -311,6 +311,7 @@ export const changePremiumStatusAction = withActionInstrumentation(
           case PremiumTier.BUSINESS_MONTHLY:
           case PremiumTier.BASIC_MONTHLY:
           case PremiumTier.COPILOT_MONTHLY:
+          case PremiumTier.SEVEN_DAY_PASS:
             return new Date(now.getTime() + ONE_MONTH_MS * (data.count || 1));
           default:
             return null;

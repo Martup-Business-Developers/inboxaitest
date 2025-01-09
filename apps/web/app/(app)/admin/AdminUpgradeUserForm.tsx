@@ -99,6 +99,10 @@ export const AdminUpgradeUserForm = () => {
             label: PremiumTier.LIFETIME,
             value: PremiumTier.LIFETIME,
           },
+          {
+            label: PremiumTier.SEVEN_DAY_PASS,
+            value: PremiumTier.SEVEN_DAY_PASS,
+          }
         ]}
         {...register("period")}
         error={errors.period}
