@@ -4,7 +4,7 @@
     "austenc.tailwind-docs",
     "prisma.prisma",
     "formulahendry.auto-rename-tag",
-    "wmaurer.change-case",
+    "wmaurer.capital-case",
     "mikestead.dotenv",
     "github.vscode-pull-request-github",
     "cardinal90.multi-cursor-case-preserve",

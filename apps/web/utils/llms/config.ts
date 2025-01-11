@@ -1,3 +1,11 @@
+// First, define the supportsOllama constant
+const supportsOllama =
+  process.env.NEXT_PUBLIC_OLLAMA_MODEL &&
+  (typeof window === "undefined" || // Server-side
+    window.location.protocol === "http:" || // HTTP
+    window.location.hostname === "localhost" || // Localhost
+    window.location.hostname === "127.0.0.1"); // Local IP
+
 export const Provider = {
   OPEN_AI: "openai",
   ANTHROPIC: "anthropic",
@@ -14,7 +22,7 @@ export const Model = {
   GEMINI_1_5_PRO: "gemini-1.5-pro-latest",
   GEMINI_1_5_FLASH: "gemini-1.5-flash-latest",
   GROQ_LLAMA_3_3_70B: "llama-3.3-70b-versatile",
-  ...(supportsOllama ? { OLLAMA: env.NEXT_PUBLIC_OLLAMA_MODEL } : {}),
+  ...(supportsOllama ? { OLLAMA: process.env.NEXT_PUBLIC_OLLAMA_MODEL } : {}),
 };
 
 export const providerOptions: { label: string; value: string }[] = [
@@ -22,9 +30,7 @@ export const providerOptions: { label: string; value: string }[] = [
   { label: "Anthropic", value: Provider.ANTHROPIC },
   { label: "Google", value: Provider.GOOGLE },
   { label: "Groq", value: Provider.GROQ },
-  ...(supportsOllama && Provider.OLLAMA
-    ? [{ label: "Ollama", value: Provider.OLLAMA }]
-    : []),
+  ...(supportsOllama ? [{ label: "Ollama", value: Provider.OLLAMA }] : []),
 ];
 
 export const modelOptions: Record<string, { label: string; value: string }[]> =
@@ -36,7 +42,7 @@ export const modelOptions: Record<string, { label: string; value: string }[]> =
     [Provider.ANTHROPIC]: [
       {
         label: "Claude 3.5 Sonnet",
-        value: "claude-3-5-sonnet", // used in ui only. can be either anthropic or bedrock
+        value: "claude-3-5-sonnet",
       },
     ],
     [Provider.GOOGLE]: [
@@ -55,9 +61,14 @@ export const modelOptions: Record<string, { label: string; value: string }[]> =
         value: Model.GROQ_LLAMA_3_3_70B,
       },
     ],
-    ...(Provider.OLLAMA && Model.OLLAMA
+    ...(supportsOllama
       ? {
-          [Provider.OLLAMA]: [{ label: "Ollama", value: Model.OLLAMA }],
+          [Provider.OLLAMA]: [
+            {
+              label: "Ollama",
+              value: Model.OLLAMA || "",
+            },
+          ],
         }
       : {}),
   };

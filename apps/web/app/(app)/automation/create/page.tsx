@@ -17,11 +17,15 @@ import { createAutomationAction } from "@/utils/actions/ai-rule";
 import { isActionError } from "@/utils/error";
 import { toastError, toastInfo } from "@/components/Toast";
 import { examples } from "@/app/(app)/automation/create/examples";
+import { useUser } from "@/hooks/useUser"; // Add this import
 
 type Inputs = { prompt?: string };
 
 export default function AutomationSettingsPage() {
   const router = useRouter();
+  const { user } = useUser(); // Add this hook
+  const isPremium = user?.isPremium ?? false; // Add premium check
+
   const {
     register,
     handleSubmit,
@@ -32,6 +36,14 @@ export default function AutomationSettingsPage() {
 
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     async (data) => {
+      if (!isPremium) {
+        toastError({
+          title: "Premium Required",
+          description: "This feature is only available for premium users.",
+        });
+        return;
+      }
+
       if (data.prompt) {
         const result = await createAutomationAction({ prompt: data.prompt });
 
@@ -57,7 +69,7 @@ export default function AutomationSettingsPage() {
         }
       }
     },
-    [router],
+    [router, isPremium],
   );
 
   const prompt = watch("prompt");
@@ -70,6 +82,11 @@ export default function AutomationSettingsPage() {
       <SectionDescription className="mx-auto max-w-prose text-center">
         The easiest way to create rules is using the prompt screen, but if you
         prefer, you can use this screen to add rules manually.
+        {!isPremium && (
+          <span className="mt-2 block text-yellow-600">
+            ⭐ Upgrade to premium to create custom automation rules
+          </span>
+        )}
       </SectionDescription>
 
       <div className="mx-auto mt-6 max-w-xl px-4 md:mt-10">
@@ -89,6 +106,7 @@ export default function AutomationSettingsPage() {
                 className="mt-2"
                 registerProps={register("prompt")}
                 error={errors.prompt}
+                disabled={!isPremium}
               />
               <div className="mt-2 flex justify-end gap-2">
                 <Button
@@ -103,10 +121,17 @@ export default function AutomationSettingsPage() {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={isSubmitting || !prompt || prompt.length < 5}
+                  disabled={
+                    isSubmitting || !prompt || prompt.length < 5 || !isPremium
+                  }
                   loading={isSubmitting}
+                  title={
+                    !isPremium
+                      ? "Upgrade to premium to create automation rules"
+                      : undefined
+                  }
                 >
-                  Preview Automation
+                  {isPremium ? "Preview Automation" : "Upgrade to Premium"}
                 </Button>
               </div>
             </>
@@ -119,14 +144,14 @@ export default function AutomationSettingsPage() {
                   return (
                     <Link
                       key={example.title}
-                      className="block w-full text-left"
+                      className={`block w-full text-left ${!isPremium ? "pointer-events-none opacity-50" : ""}`}
                       href={`/automation/rule/create?example=${i}`}
                     >
                       <AlertBasic
                         title={example.title}
                         description={example.description}
                         icon={example.icon}
-                        className="cursor-pointer hover:bg-gray-100"
+                        className={`${isPremium ? "cursor-pointer hover:bg-gray-100" : "cursor-not-allowed"}`}
                       />
                     </Link>
                   );
@@ -137,16 +162,41 @@ export default function AutomationSettingsPage() {
                 Or set up a rule yourself
               </TypographyH3>
               <div className="flex space-x-2 pb-8">
-                <Button variant="outline" asChild>
-                  <Link href="/automation/rule/create">Create rule</Link>
+                <Button
+                  variant="outline"
+                  asChild
+                  disabled={!isPremium}
+                  title={
+                    !isPremium
+                      ? "Upgrade to premium to create automation rules"
+                      : undefined
+                  }
+                >
+                  <Link href={isPremium ? "/automation/rule/create" : "#"}>
+                    {isPremium ? "Create rule" : "Upgrade to Premium"}
+                  </Link>
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => {
-                    setValue("prompt", "");
+                    if (isPremium) {
+                      setValue("prompt", "");
+                    } else {
+                      toastError({
+                        title: "Premium Required",
+                        description:
+                          "This feature is only available for premium users.",
+                      });
+                    }
                   }}
+                  disabled={!isPremium}
+                  title={
+                    !isPremium
+                      ? "Upgrade to premium to create automation rules"
+                      : undefined
+                  }
                 >
-                  Generate rule with AI
+                  {isPremium ? "Generate rule with AI" : "Upgrade to Premium"}
                 </Button>
               </div>
             </>

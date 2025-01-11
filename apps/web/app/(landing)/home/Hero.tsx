@@ -1,10 +1,12 @@
+import React from "react";
 import { CTAButtons } from "@/app/(landing)/home/CTAButtons";
 import { SquaresPattern } from "@/app/(landing)/home/SquaresPattern";
-import { cn } from "@/utils";
 import { LogoCloud } from "@/app/(landing)/home/LogoCloud";
 import { env } from "@/env";
 import { HeroAB } from "@/app/(landing)/home/HeroAB";
 import HeroVideoDialog from "@/components/HeroVideoDialog";
+import { Cover } from "@/components/ui/cover";
+import { cn } from "@/utils";
 
 export function HeroText({
   children,
@@ -15,7 +17,10 @@ export function HeroText({
 }) {
   return (
     <h1
-      className={cn("font-cal text-4xl text-gray-900 sm:text-6xl", className)}
+      className={cn(
+        "relative z-20 mx-auto max-w-7xl bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700 bg-clip-text py-6 text-center text-4xl font-semibold text-transparent dark:from-neutral-800 dark:via-white dark:to-white md:text-4xl lg:text-6xl",
+        className,
+      )}
     >
       {children}
     </h1>
@@ -51,11 +56,11 @@ export function Hero({
 
           <div className="mx-auto max-w-xl text-center">
             <HeroText>
-              {title || "Stop wasting half your day in Gmail"}
+              Your Inbox Just got <Cover>10x Faster</Cover>
             </HeroText>
             <HeroSubtitle>
               {subtitle ||
-                "Automate your email with AI, bulk unsubscribe from newsletters, and block cold emails."}
+                "Take control of your email workflow with intelligent automation, newsletter management, and spam protection."}
             </HeroSubtitle>
             <CTAButtons />
             <LogoCloud />
@@ -67,7 +72,7 @@ export function Hero({
               animationStyle="top-in-bottom-out"
               videoSrc="https://ftaxatshahchanel.com"
               thumbnailSrc={image || "/images/newsletters.png"}
-              thumbnailAlt="Bulk Unsubscriber Screenshot"
+              thumbnailAlt="Email Management Dashboard"
             />
           </div>
         </div>
@@ -95,3 +100,5 @@ function ProductHuntBadge() {
     </div>
   );
 }
+
+export default Hero;

@@ -22,6 +22,14 @@
     "prettier": "^3.3.3",
     "turbo": "^2.3.3"
   },
+  "dependencies": {
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/engine": "^3.7.1",
+    "@tsparticles/slim": "^3.7.1",
+    "framer-motion": "^10.16.1",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^1.14.0"
+  },
   "packageManager": "pnpm@9.12.3",
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
