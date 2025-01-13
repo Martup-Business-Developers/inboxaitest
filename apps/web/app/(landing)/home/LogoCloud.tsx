@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import { userCount } from "@/utils/config";
 export function LogoCloud() {
   return (
     <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">

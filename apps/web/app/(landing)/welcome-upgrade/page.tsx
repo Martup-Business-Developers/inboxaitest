@@ -4,6 +4,7 @@ import { Pricing } from "@/app/(app)/premium/Pricing";
 import { Footer } from "@/app/(landing)/home/Footer";
 import { Loading } from "@/components/Loading";
 import { WelcomeUpgradeNav } from "@/app/(landing)/welcome-upgrade/WelcomeUpgradeNav";
+import { userCount } from "@/utils/config";
 
 export default function WelcomeUpgradePage() {
   return (

@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ExternalLinkIcon, EyeIcon } from "lucide-react";
 import type { PendingExecutedRules } from "@/app/api/user/planned/route";
@@ -9,14 +7,6 @@ import { ActionBadgeExpanded } from "@/components/PlanBadge";
 import { Tooltip } from "@/components/Tooltip";
 import { EmailDate } from "@/components/email-list/EmailDate";
 import { getGmailUrl } from "@/utils/url";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationLink,
-  PaginationNext,
-} from "@/components/ui/pagination";
 import { HoverCard } from "@/components/HoverCard";
 import { Badge } from "@/components/Badge";
 import { Button } from "@/components/ui/button";
@@ -24,29 +14,35 @@ import { conditionsToString, conditionTypesToString } from "@/utils/condition";
 import { MessageText } from "@/components/Typography";
 import { ReportMistake } from "@/app/(app)/automation/ReportMistake";
 import type { ParsedMessage } from "@/utils/types";
+import { useDisplayedEmail } from "@/hooks/useDisplayedEmail";
+import { ViewEmailButton } from "@/components/ViewEmailButton";
 
 export function EmailCell({
   from,
   subject,
   snippet,
+  threadId,
   messageId,
   userEmail,
 }: {
   from: string;
   subject: string;
   snippet: string;
+  threadId: string;
   messageId: string;
   userEmail: string;
 }) {
   // use regex to find first letter
   const firstLetter = from.match(/[a-zA-Z]/)?.[0] || "-";
 
+  const { showEmail } = useDisplayedEmail();
+
   return (
     <div className="flex items-center gap-4">
       <Avatar>
         <AvatarFallback>{firstLetter}</AvatarFallback>
       </Avatar>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-1 flex-col justify-center">
         <div className="font-semibold">{from}</div>
         <div className="mt-1 flex items-center font-medium">
           {subject}{" "}
@@ -56,6 +52,7 @@ export function EmailCell({
           {decodeSnippet(snippet)}
         </div>
       </div>
+      <ViewEmailButton threadId={threadId} messageId={messageId} />
     </div>
   );
 }
@@ -146,52 +143,12 @@ function OpenInGmailButton({
   userEmail: string;
 }) {
   return (
-    <button
-      type="button"
+    <Link
+      href={getGmailUrl(messageId, userEmail)}
+      target="_blank"
       className="ml-2 text-gray-700 hover:text-gray-900"
-      onClick={() => {
-        window.open(getGmailUrl(messageId, userEmail), "_blank");
-      }}
     >
       <ExternalLinkIcon className="h-4 w-4" />
-    </button>
-  );
-}
-
-export function TablePagination({ totalPages }: { totalPages: number }) {
-  const searchParams = useSearchParams();
-  const page = Number.parseInt(searchParams.get("page") || "1");
-  const hrefForPage = useCallback(
-    (value: number) => {
-      const params = new URLSearchParams(searchParams);
-      params.set("page", value.toString());
-      const asString = params.toString();
-      return asString ? `?${asString}` : "";
-    },
-    [searchParams],
-  );
-
-  if (totalPages <= 1) return null;
-
-  return (
-    <div className="m-4">
-      <Pagination className="justify-end">
-        <PaginationContent>
-          {page > 1 && (
-            <PaginationItem>
-              <PaginationPrevious href={hrefForPage(page - 1)} />
-            </PaginationItem>
-          )}
-          <PaginationItem>
-            <PaginationLink href={hrefForPage(page)}>{page}</PaginationLink>
-          </PaginationItem>
-          {page < totalPages && (
-            <PaginationItem>
-              <PaginationNext href={hrefForPage(page + 1)} />
-            </PaginationItem>
-          )}
-        </PaginationContent>
-      </Pagination>
-    </div>
+    </Link>
   );
 }

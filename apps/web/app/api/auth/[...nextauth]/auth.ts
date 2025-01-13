@@ -1,14 +1,13 @@
 import NextAuth from "next-auth";
-import { getAuthOptions } from "@/utils/auth";
+import { getAuthOptions, authOptions } from "@/utils/auth";
 import { createScopedLogger } from "@/utils/logger";
 
 const logger = createScopedLogger("Auth API");
 
-const defaultAuthOptions = getAuthOptions();
-
 export const {
   handlers: { GET, POST },
   auth,
+  signOut,
 } = NextAuth((req) => {
   if (req?.url) {
     const url = new URL(req?.url);
@@ -19,5 +18,5 @@ export const {
     }
   }
 
-  return defaultAuthOptions;
+  return authOptions;
 });

@@ -22,15 +22,17 @@ export const Model = {
   GEMINI_1_5_PRO: "gemini-1.5-pro-latest",
   GEMINI_1_5_FLASH: "gemini-1.5-flash-latest",
   GROQ_LLAMA_3_3_70B: "llama-3.3-70b-versatile",
-  ...(supportsOllama ? { OLLAMA: process.env.NEXT_PUBLIC_OLLAMA_MODEL } : {}),
+  ...(supportsOllama ? { OLLAMA: env.NEXT_PUBLIC_OLLAMA_MODEL } : {}),
 };
 
 export const providerOptions: { label: string; value: string }[] = [
-  { label: "OpenAI", value: Provider.OPEN_AI },
   { label: "Anthropic", value: Provider.ANTHROPIC },
+  { label: "OpenAI", value: Provider.OPEN_AI },
   { label: "Google", value: Provider.GOOGLE },
   { label: "Groq", value: Provider.GROQ },
-  ...(supportsOllama ? [{ label: "Ollama", value: Provider.OLLAMA }] : []),
+  ...(supportsOllama && Provider.OLLAMA
+    ? [{ label: "Ollama", value: Provider.OLLAMA }]
+    : []),
 ];
 
 export const modelOptions: Record<string, { label: string; value: string }[]> =
@@ -61,7 +63,7 @@ export const modelOptions: Record<string, { label: string; value: string }[]> =
         value: Model.GROQ_LLAMA_3_3_70B,
       },
     ],
-    ...(supportsOllama
+    ...(Provider.OLLAMA && Model.OLLAMA
       ? {
           [Provider.OLLAMA]: [
             {
