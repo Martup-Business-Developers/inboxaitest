@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Label, Radio, RadioGroup } from "@headlessui/react";
 import { CheckIcon, CreditCardIcon, SparklesIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { capitalCase } from "change-case";
+import { capitalCase } from "capital-case";
 import Link from "next/link";
 import clsx from "clsx";
 import { env } from "@/env";
