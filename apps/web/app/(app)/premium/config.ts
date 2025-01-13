@@ -62,6 +62,7 @@ const pricingAdditonalEmail: Record<PremiumTier, number> = {
   [PremiumTier.BUSINESS_ANNUALLY]: 96,
   [PremiumTier.COPILOT_MONTHLY]: 0,
   [PremiumTier.LIFETIME]: 99,
+  [PremiumTier.SEVEN_DAY_PASS]: 8,
 };
 
 const variantIdToTier: Record<number, PremiumTier> = {

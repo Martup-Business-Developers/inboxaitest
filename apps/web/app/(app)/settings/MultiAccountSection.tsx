@@ -24,7 +24,6 @@ import {
 import type { MultiAccountEmailsResponse } from "@/app/api/user/settings/multi-account/route";
 import { AlertBasic, AlertWithButton } from "@/components/Alert";
 import { usePremium } from "@/components/PremiumAlert";
-import { pricingAdditonalEmail } from "@/app/(app)/premium/config";
 import { PremiumTier } from "@prisma/client";
 import { env } from "@/env";
 import { getUserTier, isAdminForPremium } from "@/utils/premium";

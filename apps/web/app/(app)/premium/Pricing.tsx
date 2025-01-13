@@ -17,7 +17,6 @@ import { Button as ShadcnButton } from "@/components/ui/button";
 import { getUserTier, isPremiumExpired } from "@/utils/premium";
 import {
   frequencies,
-  pricingAdditonalEmail,
   sevenDayPassTier,
   businessSingleTier,
 } from "@/app/(app)/premium/config";
