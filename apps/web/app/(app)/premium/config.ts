@@ -53,7 +53,7 @@ const pricing: Record<PremiumTier, number> = {
   [PremiumTier.SEVEN_DAY_PASS]: 7,
 };
 
-const pricingAdditonalEmail: Record<PremiumTier, number> = {
+export const pricingAdditonalEmail: Record<PremiumTier, number> = {
   [PremiumTier.BASIC_MONTHLY]: 6,
   [PremiumTier.BASIC_ANNUALLY]: 4,
   [PremiumTier.PRO_MONTHLY]: 6,
