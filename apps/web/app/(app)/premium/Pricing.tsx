@@ -89,13 +89,13 @@ export function Pricing(props: { header?: React.ReactNode }) {
       return {
         Layout: TwoColLayout,
         Item: TwoColItem,
-        tiers: [sevenDayPassTier, businessSingleTier], // Example tiers
+        tiers: [businessSingleTier], // Example tiers
       };
     // control
     return {
       Layout: ThreeColLayout,
       Item: ThreeColItem,
-      tiers: [sevenDayPassTier, businessSingleTier], // Adjust tiers as needed
+      tiers: [businessSingleTier], // Adjust tiers as needed
     };
   }
 
