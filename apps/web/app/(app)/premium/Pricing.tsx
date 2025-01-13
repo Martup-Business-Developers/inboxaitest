@@ -317,53 +317,49 @@ export function Pricing(props: { header?: React.ReactNode }) {
   );
 }
 
-function ThreeColLayout({
-  children,
-  className,
-}: {
+type ItemProps = {
   children: React.ReactNode;
   className?: string;
-}) {
+  index: number;
+  frequency: {
+    value: "monthly" | "annually";
+    label: string;
+    priceSuffix: (tier: PremiumTier) => "" | "/month" | "/year";
+  };
+};
+
+const ThreeColLayout: React.FC<
+  React.PropsWithChildren<{ className?: string }>
+> = ({ children, className }) => {
   return (
     <div className={clsx("lg:mx-0 lg:max-w-none lg:grid-cols-3", className)}>
       {children}
     </div>
   );
-}
+};
 
-function TwoColLayout({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+const TwoColLayout: React.FC<
+  React.PropsWithChildren<{ className?: string }>
+> = ({ children, className }) => {
   return (
     <div className={clsx("gap-x-4 lg:max-w-4xl lg:grid-cols-2", className)}>
       {children}
     </div>
   );
-}
+};
 
-function OneColLayout({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+const OneColLayout: React.FC<
+  React.PropsWithChildren<{ className?: string }>
+> = ({ children, className }) => {
   return <div className={className}>{children}</div>;
-}
+};
 
-function ThreeColItem({
+const ThreeColItem: React.FC<ItemProps> = ({
   children,
   className,
   index,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  index: number;
-}) {
+  frequency,
+}) => {
   return (
     <div
       className={clsx(
@@ -376,31 +372,29 @@ function ThreeColItem({
       {children}
     </div>
   );
-}
+};
 
-function TwoColItem({
+const TwoColItem: React.FC<ItemProps> = ({
   children,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+  index,
+  frequency,
+}) => {
   return (
     <div className={clsx("flex flex-col justify-between", className)}>
       {children}
     </div>
   );
-}
+};
 
-function OneColItem({
+const OneColItem: React.FC<ItemProps> = ({
   children,
   className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+  index,
+  frequency,
+}) => {
   return <div className={className}>{children}</div>;
-}
+};
 
 function Badge({ children }: { children: React.ReactNode }) {
   return (
