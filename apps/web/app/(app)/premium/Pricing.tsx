@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { Label, Radio, RadioGroup } from "@headlessui/react";
 import { CheckIcon, CreditCardIcon, SparklesIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { capitalCase } from "capital-case";
+import { capitalCase } from "change-case";
 import Link from "next/link";
 import clsx from "clsx";
 import { env } from "@/env";
@@ -89,13 +89,13 @@ export function Pricing(props: { header?: React.ReactNode }) {
       return {
         Layout: TwoColLayout,
         Item: TwoColItem,
-        tiers: [businessSingleTier], // Example tiers
+        tiers: [sevenDayPassTier, businessSingleTier], // Example tiers
       };
     // control
     return {
       Layout: ThreeColLayout,
       Item: ThreeColItem,
-      tiers: [businessSingleTier], // Adjust tiers as needed
+      tiers: [sevenDayPassTier, businessSingleTier], // Adjust tiers as needed
     };
   }
 
@@ -242,11 +242,12 @@ export function Pricing(props: { header?: React.ReactNode }) {
                     )}
                   </p>
 
-                  {frequency.value === "annually" && (
-                    <p className="mt-2 text-sm leading-6 text-gray-500">
-                      Billed at $59/year
-                    </p>
-                  )}
+                  {frequency.value === "annually" &&
+                    tier.name !== "7-Day Pass" && (
+                      <p className="mt-2 text-sm leading-6 text-gray-500">
+                        Billed at $59/year
+                      </p>
+                    )}
 
                   {tier.priceAdditional ? (
                     <p className="mt-3 text-sm leading-6 text-gray-500">

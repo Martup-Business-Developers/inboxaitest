@@ -18,7 +18,10 @@ type Tier = {
   getEquivalentMonthlyPrice: (frequency: "monthly" | "annually") => number;
 };
 
-const getFrequencySuffix = (tier: PremiumTier, frequency: "monthly" | "annually") => {
+const getFrequencySuffix = (
+  tier: PremiumTier,
+  frequency: "monthly" | "annually",
+) => {
   if (tier === PremiumTier.SEVEN_DAY_PASS) {
     return ""; // No suffix for 7-Day Pass
   }
@@ -26,8 +29,16 @@ const getFrequencySuffix = (tier: PremiumTier, frequency: "monthly" | "annually"
 };
 
 export const frequencies = [
-  { value: "monthly" as const, label: "Monthly", priceSuffix: (tier: PremiumTier) => getFrequencySuffix(tier, "monthly") },
-  { value: "annually" as const, label: "Annually", priceSuffix: (tier: PremiumTier) => getFrequencySuffix(tier, "annually") },
+  {
+    value: "monthly" as const,
+    label: "Monthly",
+    priceSuffix: (tier: PremiumTier) => getFrequencySuffix(tier, "monthly"),
+  },
+  {
+    value: "annually" as const,
+    label: "Annually",
+    priceSuffix: (tier: PremiumTier) => getFrequencySuffix(tier, "annually"),
+  },
 ];
 
 const pricing: Record<PremiumTier, number> = {
@@ -47,8 +58,8 @@ const pricingAdditonalEmail: Record<PremiumTier, number> = {
   [PremiumTier.BASIC_ANNUALLY]: 4,
   [PremiumTier.PRO_MONTHLY]: 6,
   [PremiumTier.PRO_ANNUALLY]: 4,
-  [PremiumTier.BUSINESS_MONTHLY]: 6,
-  [PremiumTier.BUSINESS_ANNUALLY]: 4,
+  [PremiumTier.BUSINESS_MONTHLY]: 12,
+  [PremiumTier.BUSINESS_ANNUALLY]: 96,
   [PremiumTier.COPILOT_MONTHLY]: 0,
   [PremiumTier.LIFETIME]: 99,
 };
@@ -109,7 +120,11 @@ const basicTier: Tier = {
   ],
   cta: "Try free for 7 days",
   getDisplayedPrice: (frequency) => {
-    return pricing[frequency === "monthly" ? PremiumTier.BASIC_MONTHLY : PremiumTier.BASIC_ANNUALLY];
+    return pricing[
+      frequency === "monthly"
+        ? PremiumTier.BASIC_MONTHLY
+        : PremiumTier.BASIC_ANNUALLY
+    ];
   },
   getEquivalentMonthlyPrice: (frequency) => {
     if (frequency === "annually") {
@@ -155,7 +170,11 @@ const businessTier: Tier = {
   cta: "Get Started",
   mostPopular: true,
   getDisplayedPrice: (frequency) => {
-    return pricing[frequency === "monthly" ? PremiumTier.BUSINESS_MONTHLY : PremiumTier.BUSINESS_ANNUALLY];
+    return pricing[
+      frequency === "monthly"
+        ? PremiumTier.BUSINESS_MONTHLY
+        : PremiumTier.BUSINESS_ANNUALLY
+    ];
   },
   getEquivalentMonthlyPrice: (frequency) => {
     if (frequency === "annually") {
@@ -200,7 +219,11 @@ export const businessSingleTier: Tier = {
   cta: "Get Started",
   mostPopular: true,
   getDisplayedPrice: (frequency) => {
-    return pricing[frequency === "monthly" ? PremiumTier.BUSINESS_MONTHLY : PremiumTier.BUSINESS_ANNUALLY];
+    return pricing[
+      frequency === "monthly"
+        ? PremiumTier.BUSINESS_MONTHLY
+        : PremiumTier.BUSINESS_ANNUALLY
+    ];
   },
   getEquivalentMonthlyPrice: (frequency) => {
     if (frequency === "annually") {
@@ -240,7 +263,11 @@ const copilotTier: Tier = {
   ctaLink: env.NEXT_PUBLIC_CALL_LINK,
   mostPopular: false,
   getDisplayedPrice: (frequency) => {
-    return pricing[frequency === "monthly" ? PremiumTier.COPILOT_MONTHLY : PremiumTier.COPILOT_MONTHLY];
+    return pricing[
+      frequency === "monthly"
+        ? PremiumTier.COPILOT_MONTHLY
+        : PremiumTier.COPILOT_MONTHLY
+    ];
   },
   getEquivalentMonthlyPrice: (frequency) => {
     if (frequency === "annually") {
@@ -282,7 +309,11 @@ export const sevenDayPassTier: Tier = {
   cta: "Get 7-Day Pass",
   duration: "7 days",
   getDisplayedPrice: (frequency) => {
-    return pricing[frequency === "monthly" ? PremiumTier.SEVEN_DAY_PASS : PremiumTier.SEVEN_DAY_PASS];
+    return pricing[
+      frequency === "monthly"
+        ? PremiumTier.SEVEN_DAY_PASS
+        : PremiumTier.SEVEN_DAY_PASS
+    ];
   },
   getEquivalentMonthlyPrice: (frequency) => {
     if (frequency === "annually") {
@@ -292,7 +323,12 @@ export const sevenDayPassTier: Tier = {
   },
 };
 
-export const allTiers: Tier[] = [basicTier, businessTier, copilotTier, sevenDayPassTier];
+export const allTiers: Tier[] = [
+  basicTier,
+  businessTier,
+  copilotTier,
+  sevenDayPassTier,
+];
 
 export function getSubscriptionTier({
   variantId,
