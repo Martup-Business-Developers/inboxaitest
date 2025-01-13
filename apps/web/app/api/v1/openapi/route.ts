@@ -66,7 +66,7 @@ export async function GET(request: NextRequest) {
         url: "https://mailto.live/api/v1",
         description: "Production server",
       },
-      { url: "http://localhost:3000/api/v1", description: "Local development" },
+      { url: "http://mailto.live/api/v1", description: "Local development" },
     ],
     security: [{ ApiKeyAuth: [] }],
   });
