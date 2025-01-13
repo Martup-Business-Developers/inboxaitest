@@ -22,7 +22,7 @@ export const Model = {
   GEMINI_1_5_PRO: "gemini-1.5-pro-latest",
   GEMINI_1_5_FLASH: "gemini-1.5-flash-latest",
   GROQ_LLAMA_3_3_70B: "llama-3.3-70b-versatile",
-  ...(supportsOllama ? { OLLAMA: env.NEXT_PUBLIC_OLLAMA_MODEL } : {}),
+  ...(supportsOllama ? { OLLAMA: process.env.NEXT_PUBLIC_OLLAMA_MODEL || "ollama" } : {}),
 };
 
 export const providerOptions: { label: string; value: string }[] = [
@@ -68,7 +68,7 @@ export const modelOptions: Record<string, { label: string; value: string }[]> =
           [Provider.OLLAMA]: [
             {
               label: "Ollama",
-              value: Model.OLLAMA || "",
+              value: Model.OLLAMA,
             },
           ],
         }
