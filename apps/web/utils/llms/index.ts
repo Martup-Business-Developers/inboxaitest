@@ -47,8 +47,8 @@ function getModel({ aiProvider, aiModel, aiApiKey }: UserAIFields) {
         bedrockOptions: {
           region: env.BEDROCK_REGION,
           credentials: {
-            accessKeyId: env.BEDROCK_ACCESS_KEY,
-            secretAccessKey: env.BEDROCK_SECRET_KEY,
+            accessKeyId: env.BEDROCK_ACCESS_KEY || "default_access_key",
+            secretAccessKey: env.BEDROCK_SECRET_KEY || "default_secret_key",
           },
         },
       })(model),
