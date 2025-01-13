@@ -46,9 +46,6 @@ function StatsUpdateSectionForm(props: { statsEmailFrequency: Frequency }) {
     formState: { errors, isSubmitting },
   } = useForm<SaveEmailUpdateSettingsBody>({
     resolver: zodResolver(saveEmailUpdateSettingsBody),
-    defaultValues: {
-      statsEmailFrequency: props.statsEmailFrequency,
-    },
   });
 
   const onSubmit: SubmitHandler<SaveEmailUpdateSettingsBody> = useCallback(
