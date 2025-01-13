@@ -103,7 +103,7 @@ const bottomLinks: NavItem[] = [
   },
   {
     name: "User Guide",
-    href: "https://docs.mailto.live",
+    href: "https://docs.inboxai.live",
     target: "_blank",
     icon: BookIcon,
   },

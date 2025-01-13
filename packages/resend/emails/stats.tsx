@@ -29,7 +29,7 @@ export interface StatsUpdateEmailProps {
 
 export default function StatsUpdateEmail(props: StatsUpdateEmailProps) {
   const {
-    baseUrl = "https://www.mailto.live",
+    baseUrl = "https://www.inboxai.live",
     // userEmail = "hello@example.com",
     received = 112,
     receivedPercentageDifference = 12,
@@ -62,7 +62,7 @@ export default function StatsUpdateEmail(props: StatsUpdateEmailProps) {
             <Section className="mt-8">
               <Link href={baseUrl} className="text-[15px]">
                 <Img
-                  src={"https://www.mailto.live/icon.png"}
+                  src={"https://www.inboxai.live/icon.png"}
                   width="40"
                   height="40"
                   alt="Mailto Live"

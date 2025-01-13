@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI-Powered Email Analytics: Maximize Your Productivity | MailtoLive",
     description: "Unlock transformative email management with AI-driven insights. Streamline communication, boost efficiency, and conquer inbox chaos.",
-    url: "https://mailto.live/email-analytics",
+    url: "https://inboxai.live/email-analytics",
     images: [
       {
         url: "/images/analytics.png",

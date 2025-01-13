@@ -97,17 +97,17 @@ const nextConfig = {
       },
       {
         source: "/feature-requests",
-        destination: "mailto:info@mailto.live",
+        destination: "mailto:info@inboxai.live",
         permanent: true,
       },
       {
         source: "/feedback",
-        destination: "mailto:info@mailto.live",
+        destination: "mailto:info@inboxai.live",
         permanent: true,
       },
       {
         source: "/roadmap",
-        destination: "https://docs.mailto.live",
+        destination: "https://docs.inboxai.live",
         permanent: true,
       },
       {

@@ -30,7 +30,7 @@ const faqs = [
       <>
         If you don’t think we provided you with value, send us an{" "}
         <a
-          href="mailto:info@mailto.live"
+          href="mailto:info@inboxai.live"
           target="_blank"
           className="font-semibold hover:underline"
           rel="noreferrer"

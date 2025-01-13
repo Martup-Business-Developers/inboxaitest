@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Effortlessly Block Cold Emails with AI | MailtoLive",
     description:
       "Enhance your email productivity with MailtoLive's AI-powered cold email blocker. Automatically filter and manage unsolicited emails for a cleaner inbox.",
-    url: "https://mailto.live/block-cold-emails",
+    url: "https://inboxai.live/block-cold-emails",
     images: [
       {
         url: "/images/cold-email-blocker.png",

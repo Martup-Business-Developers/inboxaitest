@@ -10,10 +10,10 @@ const navigation = {
   ],
   support: [
     { name: "Pricing", href: "/#pricing" },
-    { name: "Contact", href: "mailto:info@mailto.live", target: "_blank" },
+    { name: "Contact", href: "mailto:info@inboxai.live", target: "_blank" },
     {
       name: "Documentation",
-      href: "https://docs.mailto.live",
+      href: "https://docs.inboxai.live",
       target: "_blank",
     },
     { name: "Feature Requests", href: "/feature-requests", target: "_blank" },
@@ -112,7 +112,7 @@ export function Footer() {
         <p className="mt-2 text-center text-xs leading-5 text-gray-400">
           Incredible work of{" "}
           <Link
-            href="https://github.com/ftaxats/mailto.live"
+            href="https://github.com/ftaxats/inboxai.live"
             className="hover:underline"
           >
             Ellie

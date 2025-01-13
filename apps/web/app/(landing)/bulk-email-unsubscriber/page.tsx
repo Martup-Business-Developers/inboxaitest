@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Effortless Bulk Email Unsubscriber | MailtoLive",
     description:
       "Simplify email management with MailtoLive's bulk email unsubscriber. One-click unsubscribe from newsletters and marketing emails for a clutter-free inbox.",
-    url: "https://mailto.live/bulk-email-unsubscriber",
+    url: "https://inboxai.live/bulk-email-unsubscriber",
     images: [
       {
         url: "/images/email-unsubscriber.png",

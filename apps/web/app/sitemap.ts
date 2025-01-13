@@ -8,7 +8,7 @@ async function getBlogPosts() {
     query: postSlugsQuery,
   });
   return posts.map((post) => ({
-    url: `https://www.mailto.live/blog/post/${post.slug}`,
+    url: `https://www.inboxai.live/blog/post/${post.slug}`,
     lastModified: new Date(post.date),
   }));
 }
@@ -21,62 +21,62 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticUrls = [
     {
-      url: "https://www.mailto.live/",
+      url: "https://www.inboxai.live/",
       priority: 1,
     },
     {
-      url: "https://www.mailto.live/bulk-email-unsubscriber",
+      url: "https://www.inboxai.live/bulk-email-unsubscriber",
     },
     {
-      url: "https://www.mailto.live/ai-automation",
+      url: "https://www.inboxai.live/ai-automation",
     },
     {
-      url: "https://www.mailto.live/email-analytics",
+      url: "https://www.inboxai.live/email-analytics",
     },
     {
-      url: "https://www.mailto.live/block-cold-emails",
+      url: "https://www.inboxai.live/block-cold-emails",
     },
     {
-      url: "https://www.mailto.live/new-email-senders",
+      url: "https://www.inboxai.live/new-email-senders",
     },
     {
-      url: "https://www.mailto.live/privacy",
+      url: "https://www.inboxai.live/privacy",
     },
     {
-      url: "https://www.mailto.live/terms",
+      url: "https://www.inboxai.live/terms",
     },
     {
-      url: "https://www.mailto.live/blog",
+      url: "https://www.inboxai.live/blog",
       changeFrequency: "daily",
       lastModified: new Date(),
       priority: 1,
     },
     {
-      url: "https://www.mailto.live/blog/post/alternatives-to-skiff-mail",
+      url: "https://www.inboxai.live/blog/post/alternatives-to-skiff-mail",
     },
     {
-      url: "https://www.mailto.live/blog/post/best-email-unsubscribe-app",
+      url: "https://www.inboxai.live/blog/post/best-email-unsubscribe-app",
     },
     {
-      url: "https://www.mailto.live/blog/post/bulk-unsubscribe-from-emails",
+      url: "https://www.inboxai.live/blog/post/bulk-unsubscribe-from-emails",
     },
     {
-      url: "https://www.mailto.live/blog/post/escape-email-trap-unsubscribe-for-good",
+      url: "https://www.inboxai.live/blog/post/escape-email-trap-unsubscribe-for-good",
     },
     {
-      url: "https://docs.mailto.live/",
+      url: "https://docs.inboxai.live/",
     },
     {
-      url: "https://docs.mailto.live/introduction",
+      url: "https://docs.inboxai.live/introduction",
     },
     {
-      url: "https://docs.mailto.live/essentials/email-ai-automation",
+      url: "https://docs.inboxai.live/essentials/email-ai-automation",
     },
     {
-      url: "https://docs.mailto.live/essentials/bulk-email-unsubscriber",
+      url: "https://docs.inboxai.live/essentials/bulk-email-unsubscriber",
     },
     {
-      url: "https://docs.mailto.live/essentials/cold-email-blocker",
+      url: "https://docs.inboxai.live/essentials/cold-email-blocker",
     },
   ];
 

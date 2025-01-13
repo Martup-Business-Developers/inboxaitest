@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Elevate Productivity with AI Email Analytics | MailtoLive",
     description:
       "Unlock email insights to boost productivity. Analyze patterns and manage your inbox intelligently with MailtoLive's email analytics.",
-    url: "https://mailto.live/email-analytics",
+    url: "https://inboxai.live/email-analytics",
     images: [
       {
         url: "/images/analytics.png",

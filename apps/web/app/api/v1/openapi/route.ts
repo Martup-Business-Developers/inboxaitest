@@ -30,7 +30,7 @@ registry.registerPath({
       groupId: z
         .string()
         .describe(
-          "You can find the group id by going to `https://www.mailto.live/automation?tab=groups`, clicking `Matching Emails`, and then copying the id from the URL.",
+          "You can find the group id by going to `https://www.inboxai.live/automation?tab=groups`, clicking `Matching Emails`, and then copying the id from the URL.",
         ),
     }),
     query: groupEmailsQuerySchema,
@@ -63,10 +63,10 @@ export async function GET(request: NextRequest) {
         ? [{ url: `${customHost}/api/v1`, description: "Custom host" }]
         : []),
       {
-        url: "https://mailto.live/api/v1",
+        url: "https://inboxai.live/api/v1",
         description: "Production server",
       },
-      { url: "http://mailto.live/api/v1", description: "Local development" },
+      { url: "http://inboxai.live/api/v1", description: "Local development" },
     ],
     security: [{ ApiKeyAuth: [] }],
   });
