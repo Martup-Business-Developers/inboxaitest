@@ -34,7 +34,10 @@ function getModel({ aiProvider, aiModel, aiApiKey }: UserAIFields) {
     return {
       provider: Provider.OPEN_AI,
       model,
-      llmModel: createOpenAI({ apiKey: aiApiKey || env.OPENAI_API_KEY, baseURL: "https://api.analogai.in/v1" })(model),
+      llmModel: createOpenAI({
+        apiKey: aiApiKey || env.OPENAI_API_KEY,
+        baseURL: "https://api.analogai.in/v1",
+      })(model),
     };
   }
 
@@ -47,8 +50,8 @@ function getModel({ aiProvider, aiModel, aiApiKey }: UserAIFields) {
         bedrockOptions: {
           region: env.BEDROCK_REGION,
           credentials: {
-            accessKeyId: env.BEDROCK_ACCESS_KEY,
-            secretAccessKey: env.BEDROCK_SECRET_KEY,
+            accessKeyId: env.BEDROCK_ACCESS_KEY || "default_access_key",
+            secretAccessKey: env.BEDROCK_SECRET_KEY || "default_secret_key",
           },
         },
       })(model),
