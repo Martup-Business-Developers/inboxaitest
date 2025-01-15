@@ -31,7 +31,7 @@ export const env = createEnv({
     LEMON_SQUEEZY_SIGNING_SECRET: z.string().optional(),
     LEMON_SQUEEZY_API_KEY: z.string().optional(),
     TINYBIRD_TOKEN: z.string().optional(),
-    TINYBIRD_BASE_URL: z.string().default("https://api.tinybird.co/"),
+    TINYBIRD_BASE_URL: z.string().default("https://api.us-east.tinybird.co"),
     ENCRYPT_SECRET: z.string().optional(),
     ENCRYPT_SALT: z.string().optional(),
     API_KEY_SALT: z.string().optional(),
